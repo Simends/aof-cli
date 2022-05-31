@@ -8,7 +8,6 @@ from bs4 import BeautifulSoup
 
 VERSION = 0.1
 
-TABLE_FORMAT = "fancy_grid"
 
 tournaments = {
     **dict.fromkeys(["eliteserien"], 1),
@@ -76,9 +75,10 @@ def getNews():
 
 
 def main(argv):
+    table_format = "fancy_grid"
     if len(argv) == 0:
         print("\n" + getNews())
-        print(getOnTV().to_markdown(tablefmt=TABLE_FORMAT))
+        print(getOnTV().to_markdown(tablefmt=table_format))
         sys.exit(0)
     try:
         opts, args = getopt.getopt(
@@ -91,6 +91,7 @@ def main(argv):
                 "tabell",
                 "hjemmetabell",
                 "bortetabell",
+                "tabellformat",
                 "lag=",
                 "terminliste",
                 "statistikk=",
@@ -136,7 +137,7 @@ def main(argv):
         if team != "":
             print("Not supported yet")
         if tournament != "":
-            print(getTournamentTable(tournament, table).to_markdown(tablefmt=TABLE_FORMAT))
+            print(getTournamentTable(tournament, table).to_markdown(tablefmt=table_format))
     if fixtures == True:
         print("Not supported yet")
     if stat_mode != "":
