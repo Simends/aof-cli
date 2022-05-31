@@ -83,7 +83,7 @@ def main(argv):
     try:
         opts, args = getopt.getopt(
             argv,
-            "hvs:",
+            "hvl:s:",
             [
                 "hjelp",
                 "versjon",
@@ -113,7 +113,7 @@ def main(argv):
         elif o in ("-v", "--versjon"):
             printVersion()
             sys.exit(0)
-        elif o == "--liga":
+        elif o in ("-l", "--liga"):
             tournament = a
         elif o == "--tabell":
             table = "total"
