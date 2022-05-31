@@ -88,7 +88,9 @@ def main(argv):
                 "hjelp",
                 "versjon",
                 "liga=",
-                "tabell=",
+                "tabell",
+                "hjemmetabell",
+                "bortetabell",
                 "lag=",
                 "terminliste",
                 "statistikk=",
@@ -113,9 +115,11 @@ def main(argv):
         elif o == "--liga":
             tournament = a
         elif o == "--tabell":
-            table = a
-            if a == "":
-                table = "total"
+            table = "total"
+        elif o == "--hjemmetabell":
+            table = "home"
+        elif o == "--bortetabell":
+            table = "away"
         elif o == "--lag":
             team = a
         elif o == "--terminliste":
