@@ -80,7 +80,11 @@ def getTournamentTable(tournamentId, tournamentType):
         + tournamentType
         + "&live=false&useFullUrl=false"
     )
-    df = pd.read_html(url, attrs={"class": "sd_table"}, flavor="bs4", keep_default_na=False)[0]
+    try:
+        df = pd.read_html(url, attrs={"class": "sd_table"}, flavor="bs4", keep_default_na=False)[0]
+    except ValueError:
+        print("No data found")
+        sys.exit(0)
 
     if tournamentType == "both":
         df.rename(columns={"Unnamed: 0_level_0": pos}, inplace=True)
@@ -99,7 +103,11 @@ def getTournamentStatistics(tournamentId, statType):
         + str(tournamentId)
         + "&seasonId=&teamId=&useFullUrl=false"
     )
-    df = pd.read_html(url, attrs={"class": "sd_table"}, flavor="bs4", keep_default_na=False)[0]
+    try:
+        df = pd.read_html(url, attrs={"class": "sd_table"}, flavor="bs4", keep_default_na=False)[0]
+    except ValueError:
+        print("No data found")
+        sys.exit(0)
     if statType == "spectators":
         df.set_index("Lag", inplace=True)
     else:
@@ -109,7 +117,11 @@ def getTournamentStatistics(tournamentId, statType):
 
 def getOnTV():
     url = "https://www.altomfotball.no/elementsCommonAjax.do?cmd=fixturesContent&subCmd=fewFixturesTournamentNames&month=twoweeks&filter=tv&useFullUrl=false"
-    df = pd.read_html(url, attrs={"class": "sd_table"}, flavor="bs4", keep_default_na=False)[0]
+    try:
+        df = pd.read_html(url, attrs={"class": "sd_table"}, flavor="bs4", keep_default_na=False)[0]
+    except ValueError:
+        print("No data found")
+        sys.exit(0)
     del df["Unnamed: 3_level_0"]
     df.columns = df.columns.droplevel(1)
     return df
