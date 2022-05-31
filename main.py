@@ -111,7 +111,9 @@ def getTournamentTable(tournamentId, tournamentType):
         + "&live=false&useFullUrl=false"
     )
     try:
-        df = pd.read_html(url, attrs={"class": "sd_table"}, flavor="bs4", keep_default_na=False)[0]
+        df = pd.read_html(
+            url, attrs={"class": "sd_table"}, flavor="bs4", keep_default_na=False
+        )[0]
     except ValueError:
         print("No data found")
         sys.exit(0)
@@ -134,7 +136,9 @@ def getTournamentStatistics(tournamentId, statType):
         + "&seasonId=&teamId=&useFullUrl=false"
     )
     try:
-        df = pd.read_html(url, attrs={"class": "sd_table"}, flavor="bs4", keep_default_na=False)[0]
+        df = pd.read_html(
+            url, attrs={"class": "sd_table"}, flavor="bs4", keep_default_na=False
+        )[0]
     except ValueError:
         print("No data found")
         sys.exit(0)
@@ -155,7 +159,9 @@ def getTournamentFixtures(tournamentId, month, year):
         + "&useFullUrl=false"
     )
     try:
-        df = pd.read_html(url, attrs={"class": "sd_fixtures"}, flavor="bs4", keep_default_na=False)[0]
+        df = pd.read_html(
+            url, attrs={"class": "sd_fixtures"}, flavor="bs4", keep_default_na=False
+        )[0]
     except ValueError:
         print("No data found")
         sys.exit(0)
@@ -172,7 +178,9 @@ def getTournamentFixtures(tournamentId, month, year):
 def getOnTV():
     url = "https://www.altomfotball.no/elementsCommonAjax.do?cmd=fixturesContent&subCmd=fewFixturesTournamentNames&month=twoweeks&filter=tv&useFullUrl=false"
     try:
-        df = pd.read_html(url, attrs={"class": "sd_table"}, flavor="bs4", keep_default_na=False)[0]
+        df = pd.read_html(
+            url, attrs={"class": "sd_table"}, flavor="bs4", keep_default_na=False
+        )[0]
     except ValueError:
         print("No data found")
         sys.exit(0)
@@ -311,7 +319,11 @@ def main(argv):
                 month = "0"
             else:
                 month = fixtures
-            print(getTournamentFixtures(tournament, month, year).to_markdown(tablefmt=table_format))
+            print(
+                getTournamentFixtures(tournament, month, year).to_markdown(
+                    tablefmt=table_format
+                )
+            )
     if stat_mode != "":
         if tournament != "":
             if stat_lines > 0:
