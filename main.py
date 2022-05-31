@@ -11,15 +11,19 @@ VERSION = 0.1
 TABLE_FORMAT = "fancy_grid"
 
 tournaments = {
-    "men": {
-        "no": {"eliteserien": 1, "div1": 2, "div2a1": 4, "div2a2": 5},
-        "en": {"pl": 230},
-        "fr": {"ligue1": 241},
-        "es": {"laliga": 238},
-        "de": {"bundesliga": 239},
-        "it": {"seriea": 236},
-    },
-    "women": {"global": {}, "no": {"toppserien": 3}},
+    **dict.fromkeys(["eliteserien"], 1),
+    **dict.fromkeys(["obos", "obos ligaen", "obos_ligaen"], 2),
+    **dict.fromkeys(["toppserien"], 3),
+    **dict.fromkeys(["pl", "premier league", "premier_league"], 230),
+    **dict.fromkeys(["ligue1"], 241),
+    **dict.fromkeys(["laliga"], 238),
+    **dict.fromkeys(["bundesliga"], 239),
+    **dict.fromkeys(["seriea"], 236),
+    **dict.fromkeys(["liga portugal bwin"], 249),
+    **dict.fromkeys(["eredivisie"], 243),
+    **dict.fromkeys(["jupiler pro league"], 246),
+    **dict.fromkeys(["3f superliga"], 244),
+    **dict.fromkeys(["allsvenskan"], 245),
 }
 
 
@@ -121,10 +125,9 @@ def main(argv):
         else:
             assert False, "unhandled option"
     if tournament == "" and team == "":
-        tournament = "men,no,eliteserien"
+        tournament = "eliteserien"
     if tournament != "":
-        t = tournament.split(",")
-        tournament = tournaments[t[0]][t[1]][t[2]]
+        tournament = tournaments[tournament.lower()]
     if table != "":
         if team != "":
             print("Not supported yet")
