@@ -6,6 +6,8 @@ import requests
 import pandas as pd
 from bs4 import BeautifulSoup
 
+VERSION = 0.1
+
 TABLE_FORMAT = "fancy_grid"
 
 tournaments = {
@@ -23,6 +25,11 @@ tournaments = {
 
 def printUsage():
     print("usage: aof-cli -g [m/f] -c COUNTRY -l LEAGUE")
+    return 0
+
+
+def printVersion():
+    print("Versjon: " + str(VERSION))
     return 0
 
 
