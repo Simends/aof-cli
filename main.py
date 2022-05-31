@@ -25,6 +25,41 @@ tournaments = {
     **dict.fromkeys(["allsvenskan"], 245),
 }
 
+teams = {
+    **dict.fromkeys(["viking"], 303),
+    **dict.fromkeys(["lillestrøm"], 308),
+    **dict.fromkeys(["molde"], 309),
+    **dict.fromkeys(["strømsgodset"], 328),
+    **dict.fromkeys(["aalesund"], 403),
+    **dict.fromkeys(["rosenborg", "rbk"], 313),
+    **dict.fromkeys(["sarpsborg 08", "sarpsborg", "sarpsborg_08", "sarpsborg08"], 541),
+    **dict.fromkeys(["bodø/glimt", "bodøglimt"], 307),
+    **dict.fromkeys(["odd"], 311),
+    **dict.fromkeys(["tromsø"], 315),
+    **dict.fromkeys(["vålerenga"], 314),
+    **dict.fromkeys(["hamkam"], 320),
+    **dict.fromkeys(["sandefjord"], 324),
+    **dict.fromkeys(["haugesund"], 306),
+    **dict.fromkeys(["jerv"], 3181),
+    **dict.fromkeys(["kristiansund bk", "kristiansund"], 411),
+    **dict.fromkeys(["brann"], 302),
+    **dict.fromkeys(["mjøndalen"], 921),
+    **dict.fromkeys(["stabæk"], 312),
+    **dict.fromkeys(["sandnes ulf", "sandnes-ulf", "sandnesulf"], 496),
+    **dict.fromkeys(["kfum"], 3584),
+    **dict.fromkeys(["ranheim"], 414),
+    **dict.fromkeys(["start"], 305),
+    **dict.fromkeys(["sogndal"], 326),
+    **dict.fromkeys(["fredrikstad"], 361),
+    **dict.fromkeys(["raufoss"], 321),
+    **dict.fromkeys(["åsane"], 341),
+    **dict.fromkeys(["bryne"], 304),
+    **dict.fromkeys(["kongsvinger"], 322),
+    **dict.fromkeys(["grorud"], 2302),
+    **dict.fromkeys(["stjørdals-blink"], 2101),
+    **dict.fromkeys(["skeid"], 319),
+}
+
 
 def printUsage():
     print("usage: aof-cli -g [m/f] -c COUNTRY -l LEAGUE")
