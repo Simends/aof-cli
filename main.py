@@ -1,6 +1,7 @@
 #!/usr/bin/python
 
 import sys
+import datetime
 import getopt
 import requests
 import pandas as pd
@@ -115,6 +116,30 @@ def getTournamentStatistics(tournamentId, statType):
     return df
 
 
+def getTournamentFixtures(tournamentId, month, year):
+    url = (
+        "https://www.altomfotball.no/elementsCommonAjax.do?cmd=fixturesContent&tournamentId="
+        + str(tournamentId)
+        + "&month="
+        + month
+        + str(year)
+        + "&useFullUrl=false"
+    )
+    try:
+        df = pd.read_html(url, attrs={"class": "sd_fixtures"}, flavor="bs4", keep_default_na=False)[0]
+    except ValueError:
+        print("No data found")
+        sys.exit(0)
+    df["Lag"] = df[3] + " - " + df[5]
+    del df[7]
+    del df[2]
+    del df[3]
+    del df[5]
+    df = df[[0, 1, 4, "Lag", 6]]
+    df.rename(columns={0: "Dato", 1: "Runde", 4: "Tid", 6: "Kanal"}, inplace=True)
+    return df
+
+
 def getOnTV():
     url = "https://www.altomfotball.no/elementsCommonAjax.do?cmd=fixturesContent&subCmd=fewFixturesTournamentNames&month=twoweeks&filter=tv&useFullUrl=false"
     try:
@@ -156,7 +181,7 @@ def main(argv):
                 "bortetabell",
                 "tabellformat",
                 "lag=",
-                "terminliste",
+                "terminliste=",
                 "statistikk=",
                 "statlinjer=",
                 "statfull",
@@ -169,7 +194,7 @@ def main(argv):
     tournament = ""
     team = ""
     table = ""
-    fixtures = False
+    fixtures = ""
     stat_mode = ""
     stat_lines = 10
     for o, a in opts:
@@ -190,7 +215,7 @@ def main(argv):
         elif o == "--lag":
             team = a
         elif o == "--terminliste":
-            fixtures = True
+            fixtures = a
         elif o in ("-s", "--statistikk"):
             if a.lower() == "toppscorer":
                 stat_mode = "goals"
@@ -249,8 +274,15 @@ def main(argv):
             print(
                 getTournamentTable(tournament, table).to_markdown(tablefmt=table_format)
             )
-    if fixtures == True:
-        print("Not supported yet")
+    if fixtures != "":
+        if tournament != "":
+            time = datetime.datetime.now()
+            year = time.year
+            if fixtures == "idag":
+                month = "0"
+            else:
+                month = fixtures
+            print(getTournamentFixtures(tournament, month, year).to_markdown(tablefmt=table_format))
     if stat_mode != "":
         if tournament != "":
             if stat_lines > 0:
