@@ -234,15 +234,25 @@ def main(argv):
         if team != "":
             print("Not supported yet")
         if tournament != "":
-            print(getTournamentTable(tournament, table).to_markdown(tablefmt=table_format))
+            print(
+                getTournamentTable(tournament, table).to_markdown(tablefmt=table_format)
+            )
     if fixtures == True:
         print("Not supported yet")
     if stat_mode != "":
         if tournament != "":
             if stat_lines > 0:
-                print(getTournamentStatistics(tournament, stat_mode).head(stat_lines).to_markdown(tablefmt=table_format))
+                print(
+                    getTournamentStatistics(tournament, stat_mode)
+                    .head(stat_lines)
+                    .to_markdown(tablefmt=table_format)
+                )
             else:
-                print(getTournamentStatistics(tournament, stat_mode).to_markdown(tablefmt=table_format))
+                print(
+                    getTournamentStatistics(tournament, stat_mode).to_markdown(
+                        tablefmt=table_format
+                    )
+                )
     return 0
 
 
