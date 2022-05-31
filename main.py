@@ -63,7 +63,36 @@ teams = {
 
 
 def printUsage():
-    print("usage: aof-cli -g [m/f] -c COUNTRY -l LEAGUE")
+    print(
+        "\nUsage:\n\taof-cli [-l | --liga <liganavn>] [--tabellformat <format>] --tabell | --hjemmetabell | --bortetabell"
+    )
+    print(
+        "\taof-cli [-l | --liga <liganavn>] [--tabellformat <format>] --terminliste <måned>"
+    )
+    print(
+        "\taof-cli [-l | --liga <liganavn>] [--tabellformat <format>] [--statlinjer <linjetall> | --statfull] -s | --statistikk <statistikktype>"
+    )
+    print("\taof-cli [-h | --hjelp] | [-v | --versjon]\n")
+    print("Statistikk:")
+    print(
+        "\tMulige alternativer: toppscorer,"
+        + " assist,"
+        + " poengliga,"
+        + " gule kort,"
+        + " røde kort,"
+        + " straffe,"
+        + " straffebom,"
+        + " selvmål,"
+        + " kamper fra start,"
+        + " byttet inn,"
+        + " byttet ut,"
+        + " lagbørs,"
+        + " råtassen,"
+        + " på benken,"
+        + " råeste lag,"
+        + " når kom målene,"
+        + " tilskuertall"
+    )
     return 0
 
 
