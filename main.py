@@ -56,6 +56,22 @@ def getTournamentTable(tournamentId, tournamentType):
     return df
 
 
+def getTournamentStatistics(tournamentId, statType):
+    url = (
+        "https://www.altomfotball.no/elementsCommonAjax.do?cmd=statistics&subCmd="
+        + statType
+        + "&tournamentId="
+        + str(tournamentId)
+        + "&seasonId=&teamId=&useFullUrl=false"
+    )
+    df = pd.read_html(url, attrs={"class": "sd_table"}, flavor="bs4")[0]
+    if statType == "spectators":
+        df.set_index("Lag", inplace=True)
+    else:
+        df.set_index("Nr.", inplace=True)
+    return df
+
+
 def getOnTV():
     url = "https://www.altomfotball.no/elementsCommonAjax.do?cmd=fixturesContent&subCmd=fewFixturesTournamentNames&month=twoweeks&filter=tv&useFullUrl=false"
     df = pd.read_html(url, attrs={"class": "sd_table"}, flavor="bs4")[0]
@@ -95,6 +111,8 @@ def main(argv):
                 "lag=",
                 "terminliste",
                 "statistikk=",
+                "statlinjer=",
+                "statfull",
             ],
         )
     except getopt.GetoptError as err:
@@ -106,6 +124,7 @@ def main(argv):
     table = ""
     fixtures = False
     stat_mode = ""
+    stat_lines = 10
     for o, a in opts:
         if o in ("-h", "--hjelp"):
             printUsage()
@@ -126,7 +145,50 @@ def main(argv):
         elif o == "--terminliste":
             fixtures = True
         elif o in ("-s", "--statistikk"):
-            stat_mode = a
+            if a.lower() == "toppscorer":
+                stat_mode = "goals"
+            elif a.lower() == "assist":
+                stat_mode = "assists"
+            elif a.lower() == "poengliga":
+                stat_mode = "pointLeague"
+            elif a.lower() == "gule kort":
+                stat_mode = "yellowCards"
+            elif a.lower() == "røde kort":
+                stat_mode = "redCards"
+            elif a.lower() == "straffe":
+                stat_mode = "penaltyShots"
+            elif a.lower() == "straffebom":
+                stat_mode = "penaltyMisses"
+            elif a.lower() == "selvmål":
+                stat_mode = "ownGoals"
+            elif a.lower() == "kamper fra start":
+                stat_mode = "gamesFromStart"
+            elif a.lower() == "byttet inn":
+                stat_mode = "changedIn"
+            elif a.lower() == "byttet ut":
+                stat_mode = "changedOut"
+            elif a.lower() == "lagbørs":
+                stat_mode = "teamScore"
+            elif a.lower() == "råtassen":
+                stat_mode = "mostBrutalPerson"
+            elif a.lower() == "på benken":
+                stat_mode = "gamesAsSubstitute"
+            elif a.lower() == "råeste lag":
+                stat_mode = "mostBrutal"
+            elif a.lower() == "når kom målene":
+                stat_mode = "goalTiming"
+            elif a.lower() == "tilskuertall":
+                stat_mode = "spectators"
+            else:
+                print("option -s " + a + " not recognized")
+                printUsage()
+                sys.exit(1)
+        elif o == "--statlinjer":
+            stat_lines = int(a)
+        elif o == "--statfull":
+            stat_lines = 0
+        elif o == "--tabellformat":
+            table_format = a
         else:
             assert False, "unhandled option"
     if tournament == "" and team == "":
@@ -141,7 +203,11 @@ def main(argv):
     if fixtures == True:
         print("Not supported yet")
     if stat_mode != "":
-        print("Not supported yet")
+        if tournament != "":
+            if stat_lines > 0:
+                print(getTournamentStatistics(tournament, stat_mode).head(stat_lines).to_markdown(tablefmt=table_format))
+            else:
+                print(getTournamentStatistics(tournament, stat_mode).to_markdown(tablefmt=table_format))
     return 0
 
 
