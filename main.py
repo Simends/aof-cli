@@ -72,12 +72,68 @@ def getNews():
 
 
 def main(argv):
-    try:
-        opts, args = getopt.getopt(argv, "hvg:m:c:l:")
-    except getopt.GetoptError:
+    if len(argv) == 0:
         print("\n" + getNews())
         print(getOnTV().to_markdown(tablefmt=TABLE_FORMAT))
         sys.exit(0)
+    try:
+        opts, args = getopt.getopt(
+            argv,
+            "hvs:",
+            [
+                "hjelp",
+                "versjon",
+                "liga=",
+                "tabell=",
+                "lag=",
+                "terminliste",
+                "statistikk=",
+            ],
+        )
+    except getopt.GetoptError as err:
+        print(err)
+        printUsage()
+        sys.exit(1)
+    tournament = ""
+    team = ""
+    table = ""
+    fixtures = False
+    stat_mode = ""
+    for o, a in opts:
+        if o in ("-h", "--hjelp"):
+            printUsage()
+            sys.exit(0)
+        elif o in ("-v", "--versjon"):
+            printVersion()
+            sys.exit(0)
+        elif o == "--liga":
+            tournament = a
+        elif o == "--tabell":
+            table = a
+            if a == "":
+                table = "total"
+        elif o == "--lag":
+            team = a
+        elif o == "--terminliste":
+            fixtures = True
+        elif o in ("-s", "--statistikk"):
+            stat_mode = a
+        else:
+            assert False, "unhandled option"
+    if tournament == "" and team == "":
+        tournament = "men,no,eliteserien"
+    if tournament != "":
+        t = tournament.split(",")
+        tournament = tournaments[t[0]][t[1]][t[2]]
+    if table != "":
+        if team != "":
+            print("Not supported yet")
+        if tournament != "":
+            print(getTournamentTable(tournament, table).to_markdown(tablefmt=TABLE_FORMAT))
+    if fixtures == True:
+        print("Not supported yet")
+    if stat_mode != "":
+        print("Not supported yet")
     return 0
 
 
